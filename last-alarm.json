@@ -1,5 +1,17 @@
 {
-  "host": "staging247.de",
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DIVERA 24/7 API",
+    "description": "Die DIVERA 24/7 API bietet verschiedene Möglichkeiten um mit externen Programmen verschiedene Aktionen zu triggern."
+  },
+  "tags": [
+    {
+      "name": "Einsatzinformationen",
+      "description": "Informationen zum letzten Einsatz"
+    }
+  ],
+  "host": "divera247.com",
   "basePath": "/api",
   "schemes": [
     "https"
@@ -11,17 +23,19 @@
       "name": "accesskey"
     }
   },
-  "/last-alarm": {
-    "get": {
-      "tags": [ "Einsatzinformationen" ],
-      "summary": "Informationen zum letzten Einsatz abfragen",
-      "security": [ { "accesskey": [] } ],
-      "responses": {
-        "200": {
-          "description": "successful"
-        },
-        "403": {
-          "description": "Accesskey fehlt oder falsch!"
+  "paths": {
+    "/last-alarm": {
+      "get": {
+        "tags": [ "Einsatzinformationen" ],
+        "summary": "Informationen zum letzten Einsatz abfragen",
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
         }
       }
     }
