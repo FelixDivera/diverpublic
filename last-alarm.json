@@ -1,0 +1,29 @@
+{
+  "host": "staging247.de",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "accesskey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "accesskey"
+    }
+  },
+  "/last-alarm": {
+    "get": {
+      "tags": [ "Einsatzinformationen" ],
+      "summary": "Informationen zum letzten Einsatz abfragen",
+      "security": [ { "accesskey": [] } ],
+      "responses": {
+        "200": {
+          "description": "successful"
+        },
+        "403": {
+          "description": "Accesskey fehlt oder falsch!"
+        }
+      }
+    }
+  }
+}
