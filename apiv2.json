@@ -1,0 +1,1841 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DIVERA 24/7 API",
+    "description": "Die DIVERA 24/7 API bietet verschiedene Möglichkeiten um mit externen Programmen verschiedene Aktionen zu triggern."
+  },
+  "tags": [
+    {
+      "name": "Einloggen+Nutzerdaten",
+      "description": "Personenbezogene Daten abfragen"
+    },
+    {
+      "name": "Daten/ Informationen",
+      "description": "Daten/ Infos zu allen Informationen abrufen"
+    },
+    {
+      "name": "Alarmierungen",
+      "description": "Alarme erstellen/ bearbeiten und löschen"
+    },
+    {
+      "name": "Mitteilungen",
+      "description": "Mitteilungen per POST-Methode auslösen"
+    },
+    {
+      "name": "Termine",
+      "description": "Termine per POST-Methode erstellen"
+    },
+    {
+      "name": "Statusgeber",
+      "description": "Status per x geben!"
+    }
+  ],
+  "host": "staging247.de",
+  "basePath": "/api/v2",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "System-Benutzer Accesskey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "accesskey"
+    }
+  },
+  "paths": {
+    "/auth/jwt": {
+      "get": {
+        "tags": [ "Einloggen+Nutzerdaten" ],
+        "summary": "JWT abfragen",
+        "consumes": [ "application/json" ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [ "Einloggen+Nutzerdaten" ],
+        "summary": "Authentifizieren für Nutzerdaten",
+        "consumes": [ "application/json" ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "jwt",
+            "in": "query",
+            "description": "JWT abfragen",
+            "required": true,
+            "type": "boolean"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Mit Nutzername und Passwort einloggen, um z.B. die ucr abzufragen.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Login": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "Loginname"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "Passwort"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/pull/all": {
+      "post": {
+        "tags": [ "Daten/ Informationen" ],
+        "summary": "Daten/ Infos zu allen Informationen abrufen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      },
+      "get": {
+        "tags": [ "Daten/ Informationen" ],
+        "summary": "Daten/ Infos zu allen Informationen abrufen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      }
+    },
+    "/pull/vehicle-status": {
+      "post": {
+        "tags": [ "Daten/ Informationen" ],
+        "summary": "Fahrzeugstatus abrufen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      },
+      "get": {
+        "tags": [ "Daten/ Informationen" ],
+        "summary": "Fahrzeugstatus abrufen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      }
+    },
+    "/alarms": {
+      "post": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "get": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Alle Alarme abrufen, erreichbar durch UCR",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ucr",
+            "in": "query",
+            "description": "UCR_ID",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      }
+    },
+    "/alarms/{id}": {
+      "get": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen bestimmten Alarm anzeigen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Einsatz ID",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      },
+      "put": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm bearbeiten",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID des Einsatzes, der bearbeitet werden soll.",
+            "requierd": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter die bei einem Einsatz bearbeitet werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "patch": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm bearbeiten",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID des Einsatzes, der bearbeitet werden soll.",
+            "requierd": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter die bei einem Einsatz bearbeitet werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm löschen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID des Einsatzes, der gelöscht werden soll.",
+            "requierd": true
+          }
+        ]
+      }
+    },
+    "/alarms/archive": {
+      "post": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Einsatz in das Archiv verschieben",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/alarms/confirm": {
+      "post": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/alarms/close": {
+      "post": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/alarms/reset-responses": {
+      "post": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/alarms/download": {
+      "post": {
+        "tags": [ "Alarmierungen" ],
+        "summary": "Einen Alarm als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Alarm": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Einsatzstichwort"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Meldungstext"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "priority": {
+                      "type": "boolean",
+                      "example": "Priorität/ Sonderrechte"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "example": "Meldung wurde archiviert?"
+                    },
+                    "response_time": {
+                      "type": "int",
+                      "example": "Zeit in Minuten, nach der keine Rückmeldung mehr möglich ist"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Privater Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/events": {
+      "post": {
+        "tags": [ "Termine" ],
+        "summary": "Einen Termin als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Termins mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Event": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Terminüberschrift"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Text zum Termin"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "fullday": {
+                      "type": "boolean",
+                      "example": "Ganztägig?"
+                    },
+                    "ts_start": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Startzeit des Termins"
+                    },
+                    "ts_end": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Endzeit des Termins"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "response_type": {
+                      "type": "int",
+                      "example": "Rückmeldung auf den Termin. 1 Ja/Nein 2 Ja/Nein/Vielleicht"
+                    },
+                    "response_until": {
+                      "type": "boolean",
+                      "example": "Ist ein Enddatum für die Rückmeldung festgelegt?"
+                    },
+                    "ts_response": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Datum bis wann die Rückmeldung möglich ist"
+                    },
+                    "show_result_count": {
+                      "type": "integer",
+                      "example": "Anzahl Antworten sichtbar 0 Keiner 1 Schreibrechte 2 Jeder"
+                    },
+                    "show_result_names": {
+                      "type": "integer",
+                      "example": "Namen in Antworten sichtbar 0 Keiner 1 Schreibrechte 2 Jeder"
+                    },
+                    "custom_answers": {
+                      "type": "boolean",
+                      "example": "Sind Freitext-Antworten möglich?"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Ist der Privat-Modus aktiv?"
+                    },
+                    "send_reminder": {
+                      "type": "boolean",
+                      "example": "Erinnerung für den Termin aktivieren?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                },
+                "Reminder": {
+                  "type": "object",
+                  "properties": {
+                    "ts": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Datum, wann die Erinnerung gesendet werden soll"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/events/{id}": {
+      "put": {
+        "tags": [ "Termine" ],
+        "summary": "Einen Termin mit PUT bearbeiten",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID des Termins, der bearbeitet werden soll.",
+            "requierd": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Termins mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Event": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Terminüberschrift"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Text zum Termin"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "fullday": {
+                      "type": "boolean",
+                      "example": "Ganztägig?"
+                    },
+                    "ts_start": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Startzeit des Termins"
+                    },
+                    "ts_end": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Endzeit des Termins"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "response_type": {
+                      "type": "int",
+                      "example": "Rückmeldung auf den Termin. 1 Ja/Nein 2 Ja/Nein/Vielleicht"
+                    },
+                    "response_until": {
+                      "type": "boolean",
+                      "example": "Ist ein Enddatum für die Rückmeldung festgelegt?"
+                    },
+                    "ts_response": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Datum bis wann die Rückmeldung möglich ist"
+                    },
+                    "show_result_count": {
+                      "type": "integer",
+                      "example": "Anzahl Antworten sichtbar 0 Keiner 1 Schreibrechte 2 Jeder"
+                    },
+                    "show_result_names": {
+                      "type": "integer",
+                      "example": "Namen in Antworten sichtbar 0 Keiner 1 Schreibrechte 2 Jeder"
+                    },
+                    "custom_answers": {
+                      "type": "boolean",
+                      "example": "Sind Freitext-Antworten möglich?"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Ist der Privat-Modus aktiv?"
+                    },
+                    "send_reminder": {
+                      "type": "boolean",
+                      "example": "Erinnerung für den Termin aktivieren?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                },
+                "Reminder": {
+                  "type": "object",
+                  "properties": {
+                    "ts": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Datum, wann die Erinnerung gesendet werden soll"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "tags": [ "Termine" ],
+        "summary": "Einen Termin mit PUT bearbeiten",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID des Termins, der bearbeitet werden soll.",
+            "requierd": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Termins mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Event": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Terminüberschrift"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Text zum Termin"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "fullday": {
+                      "type": "boolean",
+                      "example": "Ganztägig?"
+                    },
+                    "ts_start": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Startzeit des Termins"
+                    },
+                    "ts_end": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Endzeit des Termins"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "response_type": {
+                      "type": "int",
+                      "example": "Rückmeldung auf den Termin. 1 Ja/Nein 2 Ja/Nein/Vielleicht"
+                    },
+                    "response_until": {
+                      "type": "boolean",
+                      "example": "Ist ein Enddatum für die Rückmeldung festgelegt?"
+                    },
+                    "ts_response": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Datum bis wann die Rückmeldung möglich ist"
+                    },
+                    "show_result_count": {
+                      "type": "integer",
+                      "example": "Anzahl Antworten sichtbar 0 Keiner 1 Schreibrechte 2 Jeder"
+                    },
+                    "show_result_names": {
+                      "type": "integer",
+                      "example": "Namen in Antworten sichtbar 0 Keiner 1 Schreibrechte 2 Jeder"
+                    },
+                    "custom_answers": {
+                      "type": "boolean",
+                      "example": "Sind Freitext-Antworten möglich?"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Ist der Privat-Modus aktiv?"
+                    },
+                    "send_reminder": {
+                      "type": "boolean",
+                      "example": "Erinnerung für den Termin aktivieren?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                },
+                "Reminder": {
+                  "type": "object",
+                  "properties": {
+                    "ts": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Datum, wann die Erinnerung gesendet werden soll"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/news/{id}": {
+      "post": {
+        "tags": [ "Mitteilungen" ],
+        "summary": "Einen Mitteilung als POST-Methode erstellen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung einer Mitteilung mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "News": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Terminüberschrift"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Text zum Termin"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "ts_start": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Startzeit des Termins"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Ist der Privat-Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "put": {
+        "tags": [ "Mitteilungen" ],
+        "summary": "Eine Mitteilung bearbeiten",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID der Mitteilung, die bearbeitet werden soll.",
+            "requierd": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung einer Mitteilung mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Event": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "Terminüberschrift"
+                    },
+                    "text": {
+                      "type": "string",
+                      "example": "Text zum Termin"
+                    },
+                    "address": {
+                      "type": "string",
+                      "example": "Einsatzort"
+                    },
+                    "ts_start": {
+                      "type": "integer",
+                      "format": "int64",
+                      "example": "Startzeit des Termins"
+                    },
+                    "lat": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Breitengrad"
+                    },
+                    "lng": {
+                      "type": "number",
+                      "format": "double",
+                      "example": "Längengrad"
+                    },
+                    "send_push": {
+                      "type": "boolean",
+                      "example": "Push-Benachrichtigung"
+                    },
+                    "send_mail": {
+                      "type": "boolean",
+                      "example": "Mail-Benachrichtigung"
+                    },
+                    "send_sms": {
+                      "type": "boolean",
+                      "example": "SMS-Benachrichtigung"
+                    },
+                    "send_pager": {
+                      "type": "boolean",
+                      "example": "Pager-Benachrichtigung"
+                    },
+                    "send_call": {
+                      "type": "boolean",
+                      "example": "TTS-Benachrichtigung"
+                    },
+                    "private_mode": {
+                      "type": "boolean",
+                      "example": "Ist der Privat-Modus aktiv?"
+                    },
+                    "notification_type": {
+                      "type": "integer",
+                      "example": "1 Clusters 2 Alle 3 Gruppen 4 Nutzer"
+                    }
+                  }
+                },
+                "usingVehicles": {
+                  "type": "integer",
+                  "example": "ID's der Fahrzeuge, die alarmiert wurden"
+                },
+                "usingGroups": {
+                  "type": "integer",
+                  "example": "ID's der Gruppen, die alarmiert wurden"
+                },
+                "usingUserClusterRelations": {
+                  "type": "integer",
+                  "example": "ID's der Benutzer, die alarmiert wurden"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/statusgeber": {
+      "post": {
+        "tags": [ "Statusgeber" ],
+        "summary": "Status setzen",
+        "consumes": [ "application/json" ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Parameter, die bei der Erstellung eines Alarms mitgegeben werden können",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Login": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "Loginname"
+                    },
+                    "password": {
+                      "type": "string",
+                      "example": "Passwort"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

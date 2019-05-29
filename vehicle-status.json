@@ -1,0 +1,44 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DIVERA 24/7 API",
+    "description": "Die DIVERA 24/7 API bietet verschiedene Möglichkeiten um mit externen Programmen zu interagieren."
+  },
+  "tags": [
+    {
+      "name": "Daten/ Informationen",
+      "description": "Daten/ Infos abrufen"
+    }
+  ],
+  "host": "divera247.com",
+  "basePath": "/api/v2",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "System-Benutzer Accesskey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "accesskey"
+    }
+  },
+  "paths": {
+    "/pull/vehicle-status": {
+      "get": {
+        "tags": [ "Daten/ Informationen" ],
+        "summary": "Daten/ Infos zu allen Informationen abrufen",
+        "consumes": [ "application/json" ],
+        "security": [ { "System-Benutzer Accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      }
+    }
+  }
+}

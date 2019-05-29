@@ -1,0 +1,523 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "DIVERA 24/7 API",
+    "description": "Die DIVERA 24/7 API bietet verschiedene Möglichkeiten um mit externen Programmen verschiedene Aktionen zu triggern."
+  },
+  "tags": [
+    {
+      "name": "Alarm erstellen",
+      "description": "Alarme per GET- oder POST-Methode auslösen"
+    },
+    {
+      "name": "Mitteilung erstellen",
+      "description": "Mitteilungen per GET- oder POST-Methode auslösen"
+    },
+    {
+      "name": "Einsatz-Rückmeldung",
+      "description": "Rückmeldung zum Einsatz per GET- oder POST-Methode"
+    },
+    {
+      "name": "Einsatzinformationen",
+      "description": "Informationen zum letzten Einsatz"
+    },
+    {
+      "name": "FMS/ Fahrzeugdaten",
+      "description": "Fahrzeug-Rückmeldungen und Informationen"
+    }
+  ],
+  "host": "divera247.com",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "securityDefinitions": {
+    "accesskey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "accesskey"
+    },
+    "persönlicher-accesskey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "accesskey"
+    },
+    "vehicle-accesskey": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "accesskey"
+    }
+  },
+  "paths": {
+    "/alarm": {
+      "get": {
+        "tags": [ "Alarm erstellen" ],
+        "summary": "Erstellt einen neuen Einsatz",
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Das Alarm-Stichwort",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Der Meldungstext in der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "description": "Priorität/Sonderrechte",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "description": "Die Adresse der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ric",
+            "in": "query",
+            "description": "Gruppe(n)/Schleife(n) gemäß dem Feld Alarmierungs-RIC, kommasepariert",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle",
+            "in": "query",
+            "description": "Fahrzeug(e) gemäß dem Feld Alarmierungs-RIC, kommasepariert",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "description": "Breitengrad",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "Längengrad",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "delay",
+            "in": "query",
+            "description": "Die Sekunden, die seit dem Alarm vergangen sind. Korrigiert die Uhr im Alarmmonitor.",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      },
+      "post": {
+        "tags": [ "Alarm erstellen" ],
+        "summary": "Parameter für den zu erstellenden Einsatz",
+        "consumes": [ "application/x-www-form-urlencoded" ],
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "Das Alarm-Stichwort",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "formData",
+            "description": "Der Meldungstext in der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "priority",
+            "in": "formData",
+            "description": "Priorität/Sonderrechte",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "address",
+            "in": "formData",
+            "description": "Die Adresse der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ric",
+            "in": "formData",
+            "description": "Gruppe(n)/Schleife(n) gemäß dem Feld Alarmierungs-RIC, kommasepariert",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle",
+            "in": "formData",
+            "description": "Fahrzeug(e) gemäß dem Feld Alarmierungs-RIC, kommasepariert",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lng",
+            "in": "formData",
+            "description": "Breitengrad",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "lat",
+            "in": "formData",
+            "description": "Längengrad",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "delay",
+            "in": "formData",
+            "description": "Die Sekunden, die seit dem Alarm vergangen sind. Korrigiert die Uhr im Alarmmonitor.",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      }
+    },
+    "/confirm-alarm": {
+      "get": {
+        "tags": [ "Einsatz-Rückmeldung" ],
+        "summary": "Rückmeldung mit Status zu einem Einsatz",
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "alarm_id",
+            "in": "query",
+            "description": "ID des Einsatzes",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status_id",
+            "in": "query",
+            "description": "ID des Status, der gesetzt werden soll",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      },
+      "post": {
+        "tags": [ "Einsatz-Rückmeldung" ],
+        "summary": "Parameter für den zu erstellenden Einsatz",
+        "consumes": [ "application/x-www-form-urlencoded" ],
+        "security": [ { "persönlicher-accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "alarm_id",
+            "in": "formData",
+            "description": "ID des Einsatzes",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "status_id",
+            "in": "formData",
+            "description": "ID des Status, der gesetzt werden soll",
+            "required": false,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/last-alarm": {
+      "get": {
+        "tags": [ "Einsatzinformationen" ],
+        "summary": "Informationen zum letzten Einsatz abfragen",
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        }
+      }
+    },
+    "/vehicle": {
+      "get": {
+        "tags": [ "FMS/ Fahrzeugdaten" ],
+        "summary": "Rückmeldung mit Status zu einem Einsatz",
+        "security": [ { "vehicle-accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status_id",
+            "in": "query",
+            "description": "ID des FMS Status (1-9)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status_note",
+            "in": "query",
+            "description": "Freitext-Rückmeldung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_ric",
+            "in": "query",
+            "description": "Alarmierungs-RIC über die das Fahrzeug angesprochen wird",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_name",
+            "in": "query",
+            "description": "Identifizierung des Fahrzeugs anhand des Feldes Funkrufname",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_issi",
+            "in": "query",
+            "description": "Identifizierung des Fahrzeugs anhand des Felds ISSI",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_id",
+            "in": "query",
+            "description": "Identifizierung des Fahrzeugs anhand der ID",
+            "required": false,
+            "type": "string"
+          }
+        ]
+      },
+      "post": {
+        "tags": [ "FMS/ Fahrzeugdaten" ],
+        "summary": "Parameter für den zu erstellenden Einsatz",
+        "consumes": [ "application/x-www-form-urlencoded" ],
+        "security": [ { "persönlicher-accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "status_id",
+            "in": "formData",
+            "description": "ID des FMS Status (1-9)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "status_note",
+            "in": "formData",
+            "description": "Freitext-Rückmeldung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_ric",
+            "in": "formData",
+            "description": "Alarmierungs-RIC über die das Fahrzeug angesprochen wird",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_name",
+            "in": "formData",
+            "description": "Identifizierung des Fahrzeugs anhand des Feldes Funkrufname",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_issi",
+            "in": "formData",
+            "description": "Identifizierung des Fahrzeugs anhand des Felds ISSI",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "vehicle_id",
+            "in": "formData",
+            "description": "Identifizierung des Fahrzeugs anhand der ID",
+            "required": false,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/news": {
+      "get": {
+        "tags": [ "Mitteilung erstellen" ],
+        "summary": "Erstellen einer neuen Mitteilung",
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Das Alarm-Stichwort",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "Der Meldungstext in der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "description": "Die Adresse der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ric",
+            "in": "query",
+            "description": "Gruppe(n)/Schleife(n) gemäß dem Feld Alarmierungs-RIC, kommasepariert",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lng",
+            "in": "query",
+            "description": "Längengrad",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "lat",
+            "in": "query",
+            "description": "Breitengrad",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      },
+      "post": {
+        "tags": [ "Mitteilung erstellen" ],
+        "summary": "Parameter für die zu erstellende Mitteilung",
+        "consumes": [ "application/x-www-form-urlencoded" ],
+        "security": [ { "accesskey": [] } ],
+        "responses": {
+          "200": {
+            "description": "successful"
+          },
+          "403": {
+            "description": "Accesskey fehlt oder falsch!"
+          }
+        },
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "description": "Das Alarm-Stichwort",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "formData",
+            "description": "Der Meldungstext in der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "address",
+            "in": "formData",
+            "description": "Die Adresse der Alarmierung",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ric",
+            "in": "formData",
+            "description": "Gruppe(n)/Schleife(n) gemäß dem Feld Alarmierungs-RIC, kommasepariert",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "lng",
+            "in": "formData",
+            "description": "Breitengrad",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "lat",
+            "in": "formData",
+            "description": "Längengrad",
+            "required": false,
+            "type": "integer"
+          }
+        ]
+      }
+    }
+  }
+}
