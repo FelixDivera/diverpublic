@@ -54,7 +54,7 @@
             "description": "successful"
           },
           "403": {
-            "description": "Accesskey fehlt oder falsch!"
+            "description": "Accesskey fehlt oder falsch"
           }
         }
       }
